@@ -1,0 +1,6 @@
+# Credenciales locales
+config.php
+
+# Fotos subidas por los usuarios
+uploads/*
+!uploads/.gitkeep
