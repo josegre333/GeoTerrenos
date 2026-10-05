@@ -4,3 +4,8 @@ config.php
 # Fotos subidas por los usuarios
 uploads/*
 !uploads/.gitkeep
+!uploads/.htaccess
+
+# Documentos de propiedad escaneados (datos personales)
+documentos/*
+!documentos/.htaccess

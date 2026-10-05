@@ -8,7 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre   = trim($_POST['nombre'] ?? '');
     $email    = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
-    $rol      = $_POST['rol'] ?? 'user';
+    // Toda cuenta nueva empieza con el nivel más bajo; solo el Super Admin puede subirla (usuarios.php)
+    $rol      = 'user';
 
     if (!empty($nombre) && !empty($email) && !empty($password)) {
         try {
@@ -16,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, ?)");
             $stmt->execute([$nombre, $email, $pass_hash, $rol]);
 
-            header("Location: index.php?registrado=1");
+            header("Lo  ion: index.php?registrado=1");
             exit;
         } catch (\PDOException $e) {
             $mensaje = "El correo electrónico ya se encuentra registrado.";
@@ -31,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>GeoTerrenos - Registro</title>
     <style>
         * {
@@ -41,11 +43,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         body {
-            background: #121824;
+            /* Imagen de fondo a pantalla completa; el degradado oscurece los bordes para que resalte el recuadro */
+            background:
+                radial-gradient(ellipse at center, rgba(0, 20, 50, 0.15) 0%, rgba(0, 20, 50, 0.65) 100%),
+                url("assets/img/fondo-ingreso.webp") center / cover no-repeat fixed,
+                #121824;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 24px 16px;
+        }
+
+        .marca {
+            position: fixed;
+            left: 28px;
+            bottom: 24px;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        .marca strong {
+            display: block;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .marca span {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 700px) {
+            .marca {
+                display: none;
+            }
         }
 
         .box {
@@ -53,8 +86,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             width: 100%;
             max-width: 400px;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
         }
 
         h2 {
@@ -131,6 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
+    <div class="marca" aria-hidden="true"><strong>GEOTERRENOS</strong><span>Gestión y análisis de terrenos</span></div>
 
     <div class="box">
         <h2>GEOTERRENOS</h2>
@@ -158,11 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="form-group">
                 <label>Nivel de Acceso</label>
-                <select name="rol" class="form-control">
-                    <option value="user">Usuario (Consulta)</option>
-                    <option value="admin">Administrador (Edición)</option>
-                    <option value="super_admin">Super Admin (Control Total)</option>
-                </select>
+                <p style="font-size:13px; color:#475569; line-height:1.4;">Su cuenta se creará como <b>Usuario (Consulta)</b>. El administrador del sistema le asignará un nivel mayor si lo necesita.</p>
             </div>
 
             <button type="submit" class="btn-submit">Registrarme</button>

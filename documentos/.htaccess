@@ -1,0 +1,3 @@
+# Documentos de propiedad: nunca se sirven directamente.
+# Solo se descargan a través de documento.php, que comprueba los permisos.
+Require all denied

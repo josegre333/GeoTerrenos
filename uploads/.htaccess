@@ -1,0 +1,5 @@
+# Seguridad: en la carpeta de fotos y videos nunca se ejecuta código
+<FilesMatch "\.(php|phtml|phar|php\d|pl|py|cgi|sh|html?)$">
+    Require all denied
+</FilesMatch>
+Options -Indexes
